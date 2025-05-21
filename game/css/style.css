@@ -1,0 +1,76 @@
+#space {
+  background-image: url("../assets/png/Background/starBackground.png");
+  position: relative;
+  overflow: hidden;
+  width: 600px;
+  height: 900px;
+  margin: 0 auto;
+  border: 2px solid black;
+  z-index: 1;
+}
+
+#hud {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 22px;
+  color: white;
+  z-index: 1000;
+  user-select: none;
+}
+
+#lives img {
+  width: 35px;
+  height: 35px;
+  margin-left: 3px;
+}
+
+#score {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 40px;
+  font-weight: bold;
+  min-width: 100px;
+  text-align: right;
+}
+
+#ship, .enemy-ship, .enemy-ufo, .asteroid-big, .asteroid-small, .bullet {
+  position: absolute;
+  z-index: 2;
+}
+
+.bullet {
+  width: 20px;
+  height: 44px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+#game-over {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.85);
+  color: white;
+  padding: 20px 40px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  z-index: 10000;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+}
