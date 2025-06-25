@@ -1,0 +1,46 @@
+// script.js
+
+document.getElementById('drawButton').addEventListener('click', function () {
+    // Capturar os valores das caixas de texto
+    const barHeights = [
+        document.getElementById('barHeight1').value,
+        document.getElementById('barHeight2').value,
+        document.getElementById('barHeight3').value,
+        document.getElementById('barHeight4').value,
+        document.getElementById('barHeight5').value
+    ];
+    const barWidthInput = document.getElementById('barWidth').value;
+
+    // Validar os dados
+    if (!barWidthInput || barHeights.some(height => !height)) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    try {
+        // Converter as alturas das barras em um array de números
+        const barHeightsNumbers = barHeights.map(height => parseInt(height.trim()));
+        const barWidth = parseInt(barWidthInput);
+
+        // Validar se os valores são números válidos
+        if (isNaN(barWidth) || barHeightsNumbers.some(isNaN)) {
+            throw new Error('Os valores devem ser números válidos.');
+        }
+
+        // Limpar o container do gráfico antes de desenhar
+        const chartContainer = document.getElementById('chartContainer');
+        chartContainer.innerHTML = '';
+
+        // Desenhar cada barra
+        barHeightsNumbers.forEach((height, index) => {
+            const bar = document.createElement('div');
+            bar.classList.add('bar');
+            bar.style.height = `${height}px`;
+            bar.style.setProperty('--bar-width', `${barWidth}px`);
+            chartContainer.appendChild(bar);
+        });
+
+    } catch (error) {
+        alert(error.message);
+    }
+});
