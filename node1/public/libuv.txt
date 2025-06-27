@@ -1,8 +1,0 @@
-<pre>
-Libuv
-
-Libuv é uma biblioteca de suporte multiplataforma escrita em C++, com foco em 
-operações de entrada e saída (I/O) assíncronas. O Node.js utiliza a libuv em 
-sua base, juntamente com a engine V8 da Google, para fornecer seu ambiente de 
-execução.
-</pre>
