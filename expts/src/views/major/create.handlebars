@@ -1,0 +1,47 @@
+{{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+{{/if}}
+
+<h2>Criação de Curso</h2>
+<form action="/majors/create" method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="name" name="name">
+    </div>
+    <div class="mb-3">
+        <label for="code" class="form-label">Sigla</label>
+        <input type="text" class="form-control" id="code" name="code" placeholder="Ex: ICOMP">
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+{{#if success}}
+<div class="modal fade" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">Sucesso!</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{success}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+<script>
+    const modalElement = document.getElementById('successModal');
+    if (modalElement) {
+        const successModal = new bootstrap.Modal(modalElement);
+        successModal.show();
+    }
+</script>

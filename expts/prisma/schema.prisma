@@ -1,0 +1,53 @@
+// Este arquivo define a estrutura do seu banco de dados.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo para a tabela 'majors' (cursos)
+model Major {
+  id          String   @id @default(cuid()) // Chave primária, cuid() gera um ID único
+  name        String
+  code        String   @unique // O código do curso deve ser único
+  description String?  // O '?' torna o campo opcional
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relação: Um curso (Major) pode ter vários usuários (User)
+  users User[]
+}
+
+// Modelo para a tabela 'users'
+model User {
+  id        String   @id @default(cuid())
+  fullname  String
+  email     String   @unique // O email deve ser único
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relações ---
+  // Relação com Major: Um usuário pertence a um curso (Major)
+  major    Major  @relation(fields: [majorId], references: [id])
+  majorId  String // Chave estrangeira para a tabela 'majors'
+
+  // Relação com GameSession: Um usuário pode ter várias sessões de jogo
+  game_sessions GameSession[]
+}
+
+// Modelo para a tabela 'game_sessions'
+model GameSession {
+  id        String   @id @default(cuid())
+  score     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relações ---
+  // Relação com User: Uma sessão de jogo pertence a um usuário
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String // Chave estrangeira para a tabela 'users'
+}
