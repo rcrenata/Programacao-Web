@@ -1,53 +1,47 @@
-// Este arquivo define a estrutura do seu banco de dados.
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-// Modelo para a tabela 'majors' (cursos)
+
 model Major {
-  id          String   @id @default(cuid()) // Chave primária, cuid() gera um ID único
-  name        String
-  code        String   @unique // O código do curso deve ser único
-  description String?  // O '?' torna o campo opcional
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id String @id @default(uuid()) @db.Char(36)
+  name String @unique @db.VarChar(100)
+  code String @unique @db.Char(4)
+  description String? @db.Text()
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  // Relação: Um curso (Major) pode ter vários usuários (User)
   users User[]
+
+  @@map("majors")
 }
 
-// Modelo para a tabela 'users'
-model User {
-  id        String   @id @default(cuid())
-  fullname  String
-  email     String   @unique // O email deve ser único
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model User{
+  id String @id @default(uuid()) @db.Char(40)
+  fullname String  @db.VarChar(100)
+  email String @unique @db.VarChar(100)
+  major_id String @db.Char(36) 
+  password String @db.Char(60)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  // --- Relações ---
-  // Relação com Major: Um usuário pertence a um curso (Major)
-  major    Major  @relation(fields: [majorId], references: [id])
-  majorId  String // Chave estrangeira para a tabela 'majors'
-
-  // Relação com GameSession: Um usuário pode ter várias sessões de jogo
-  game_sessions GameSession[]
+  major Major @relation(fields: [major_id], references: [id], onDelete: Cascade)
+  gameSessions GameSession[] 
+  @@map("users")
 }
 
-// Modelo para a tabela 'game_sessions'
-model GameSession {
-  id        String   @id @default(cuid())
-  score     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model GameSession{
+  id String @id @default(uuid()) @db.Char(40)
+  user_id String @db.Char(40)
+  score Int @default(0) @db.Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  // --- Relações ---
-  // Relação com User: Uma sessão de jogo pertence a um usuário
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String // Chave estrangeira para a tabela 'users'
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  @@map("game_sessions")
 }

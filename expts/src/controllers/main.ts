@@ -1,5 +1,21 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import { loremIpsum } from 'lorem-ipsum';
+// import { Technology } from '../views/helpers/helperTypes';
+
+interface LoremParams {
+    paragrafos: string;
+}
+
+const index = (req: Request, res: Response) => {
+    res.send("Hello world! (agora vindo do controller)");
+};
+
+
+const sobre = (req: Request, res: Response) => {
+    res.render("main/about");
+}
+
+
 
 const hb1 = (req: Request, res: Response) => {
     res.render('main/hb1', {
@@ -38,9 +54,34 @@ const hb4 = (req: Request, res: Response) => {
     res.render('main/hb4', { technologies });
 };
 
+const lorem: RequestHandler<LoremParams> = (req, res) => {
+
+    const paragrafos = parseInt(req.params.paragrafos, 10);
+
+    if (isNaN(paragrafos) || paragrafos <= 0) {
+        res.status(400).send("Erro");
+        return;
+    }
+    const text = loremIpsum({
+        count: paragrafos, units: "paragraphs", format: "html",
+    });
+    res.send(text);
+};
+
+const testeCookie = (req : Request, res: Response) =>{
+    if(!('teste-cookie' in req.cookies)){
+        res.cookie('teste-cookie', 'algum-valor')
+        res.send("voce nunca passou aqui")
+    } else{
+        res.send("voce já passou por aqui")
+    }
+}
+
 export default {
     hb1,
     hb2,
     hb3,
     hb4,
+    lorem,
+    testeCookie 
 };

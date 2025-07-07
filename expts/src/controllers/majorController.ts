@@ -1,34 +1,86 @@
 import { Request, Response } from 'express';
-import { majorService } from '../services/majorService';
-import Joi from 'joi';
-import { MajorCreationParams } from '../types/MajorTypes';
+import { createMajor, getMajor, getMajors, removeMajor, updateMajor } from "../services/majorService"
 
-const createMajorSchema = Joi.object<MajorCreationParams>({
-    name: Joi.string().min(3).required(),
-    code: Joi.string().length(4).required(),
-    description: Joi.string().allow('').optional()
-});
-
-export const majorController = {
-    renderCreateForm: (req: Request, res: Response) => {
-        const successMessage = req.query.status === 'success' ? "Curso criado com sucesso!" : null;
-        const errorMessage = req.query.status === 'error' ? "Erro ao criar o curso. O código já pode existir." : null;
-        
-        res.render('major/create', { success: successMessage, error: errorMessage });
-    },
-
-    create: async (req: Request, res: Response) => {
-        const { error, value } = createMajorSchema.validate(req.body);
-
-        if (error) {
-            return res.render('major/create', { error: error.details[0].message });
-        }
-
-        try {
-            await majorService.create(value);
-            res.redirect('/majors/create?status=success');
-        } catch (err) {
-            res.redirect('/majors/create?status=error');
-        }
+const index = async (req: Request, res: Response) => {
+    try{
+        const majors = await getMajors();
+        res.render("majors/index", {
+            majors,
+        })
     }
-};
+    catch(err){
+        console.log(err)
+        res.status(500).send(err)
+    }
+    
+}
+
+
+const create = async (req: Request, res: Response) => {
+    if( req.method === "GET"){
+        res.render("majors/create")
+    } else if (req.method === "POST"){
+        try{
+            const major = req.body;
+            await createMajor(major)
+            res.redirect("/majors")
+        } catch(err){
+            console.log(err);
+        }
+        
+    }
+}
+
+
+const read = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try{
+        const major = await getMajor(id)
+        if (req.method === "GET"){
+            res.render(`majors/read`,{
+                major
+            }) 
+        }
+    } catch(err){
+        console.log(err)
+    }
+}
+
+
+const update = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try{
+        let major = await getMajor(id)
+        if (req.method === "GET"){
+            res.render("majors/create", {
+                major
+            })
+        } else if (req.method === "POST"){
+            const new_major = req.body;
+            await updateMajor(id, new_major)
+            console.log(new_major)
+            res.redirect("/majors")
+        }
+    } catch(err){
+        console.log(err)
+    }
+}
+
+const remove = async (req: Request, res: Response) => {
+    const {id} = req.params
+    try{
+        const major = await removeMajor(id)
+        res.status(200).send({ msg:`curso deletado ${major}` })
+    } catch(err){
+        console.log(err)
+        res.status(500).send(err)
+    }
+}
+
+export default {
+    index,
+    create,
+    read,
+    update,
+    remove
+}
