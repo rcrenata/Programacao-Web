@@ -1,0 +1,20 @@
+<h2 class="mb-4">Ranking - Top 10 Jogadores</h2>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Posição</th>
+            <th scope="col">Jogador</th>
+            <th scope="col">Pontuação Máxima</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each ranking}}
+            <tr>
+                <th scope="row">{{inc @index}}º</th>
+                <td>{{this.fullname}}</td>
+                <td>{{this.score}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>

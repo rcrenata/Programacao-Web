@@ -1,0 +1,7 @@
+<h1>Detalhes do Usuário: {{user.fullname}}</h1>
+<p><strong>Email:</strong> {{user.email}}</p>
+<p><strong>Curso:</strong> {{user.major.name}} ({{user.major.code}})</p>
+<p><strong>Criado em:</strong> {{user.createdAt}}</p>
+<p><strong>Última Atualização:</strong> {{user.updatedAt}}</p>
+<a href="/users/update/{{user.id}}" class="btn btn-warning">Editar</a>
+<a href="/users" class="btn btn-secondary">Voltar para a Lista</a>

@@ -1,0 +1,19 @@
+<h2>{{#if major}}Editar Curso{{else}}Criação de Curso{{/if}}</h2>
+
+<form action="/majors/{{#if major}}update/{{major.id}}{{else}}create{{/if}}" method="post">
+    <div class="mb-3">
+        <label for="code" class="form-label">Código do curso</label>
+
+        <input value="{{major.code}}" name="code" type="text" class="form-control" id="code" placeholder="IE08" required>
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome do curso</label>
+        <input value="{{major.name}}" name="name" type="text" class="form-control" id="name" placeholder="Ciência da Computação" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <textarea name="description" class="form-control" id="description" rows="3">{{major.description}}</textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">{{#if major}}Salvar Alterações{{else}}Criar Curso{{/if}}</button>
+</form>

@@ -1,0 +1,43 @@
+<h1>Lista de Usuários</h1>
+<a href="/users/create" class="btn btn-primary mb-3">Criar Novo Usuário</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome Completo</th>
+            <th>Email</th>
+            <th>Curso</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each users}}
+        <tr>
+            <td>{{fullname}}</td>
+            <td>{{email}}</td>
+            <td>{{major.name}} ({{major.code}})</td>
+            <td>
+                <a href="/users/read/{{id}}" class="btn btn-info btn-sm">Ver</a>
+                <a href="/users/update/{{id}}" class="btn btn-warning btn-sm">Editar</a>
+                <button class="btn btn-danger btn-sm delete-user-btn" data-id="{{id}}" data-name="{{fullname}}">Excluir</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<div class="modal fade" id="deleteUserConfirmationModal" tabindex="-1" aria-labelledby="deleteUserConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserConfirmationModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir o usuário <strong id="userFullNameToDelete"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmUserDeleteBtn">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
